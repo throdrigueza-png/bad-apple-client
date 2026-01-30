@@ -38,7 +38,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   // --- WEBSOCKET (VISUALES ETERNAS) ---
   connectWebSocket() {
     // Apuntamos al puerto 8081 (Python)
-    this.socket = new WebSocket('wss://bad-apple-server-thomas-xxxx.azurewebsites.net');
+    private socketUrl = 'wss://bad-apple-server-thomas-ahdrddfnazf8gqg0.eastus2-01.azurewebsites.net';
     
     this.socket.onmessage = (e) => {
       // Recibir frame y actualizar pantalla
