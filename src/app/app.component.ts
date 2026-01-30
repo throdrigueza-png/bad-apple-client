@@ -9,72 +9,80 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
-  // VARIABLES
+  // --- VARIABLES ---
   asciiFrame = "INITIATING CONNECTION...";
   systemStarted = false;
-  tX = 0; tY = 0; // Teto coords
+  tX = 0; 
+  tY = 0; 
 
-  // REFERENCIAS DE AUDIO Y VIDEO
+  // --- URL DE CONEXIÓN (Corregida la ubicación) ---
+  private socketUrl = 'wss://bad-apple-server-thomas-ahdrddfnazf8gqg0.eastus2-01.azurewebsites.net';
+  
+  private socket!: WebSocket;
+  private observer!: IntersectionObserver;
+
+  // --- REFERENCIAS AL HTML ---
   @ViewChild('audioBadApple') audioBadApple!: ElementRef<HTMLAudioElement>;
   @ViewChild('audioMambo') audioMambo!: ElementRef<HTMLAudioElement>;
   @ViewChild('audioMiku') audioMiku!: ElementRef<HTMLAudioElement>;
   @ViewChild('videoTeto') videoTeto!: ElementRef<HTMLVideoElement>;
 
-  private socket!: WebSocket;
-  private observer!: IntersectionObserver;
-
+  // --- AL INICIAR LA VISTA ---
   ngAfterViewInit() {
-    // 1. CONECTAR VISUALES INMEDIATAMENTE (Sin esperar click)
     this.connectWebSocket();
-    // 2. PREPARAR SENSOR DE SCROLL
     this.setupScrollObserver();
   }
 
+  // --- AL DESTRUIR LA VISTA ---
   ngOnDestroy() {
     if (this.socket) this.socket.close();
     if (this.observer) this.observer.disconnect();
   }
 
-  // --- WEBSOCKET (VISUALES ETERNAS) ---
+  // --- WEBSOCKET ---
   connectWebSocket() {
-    // Apuntamos al puerto 8081 (Python)
-    private socketUrl = 'wss://bad-apple-server-thomas-ahdrddfnazf8gqg0.eastus2-01.azurewebsites.net';
+    this.socket = new WebSocket(this.socketUrl);
     
     this.socket.onmessage = (e) => {
-      // Recibir frame y actualizar pantalla
       this.asciiFrame = e.data;
     };
 
     this.socket.onclose = () => {
-      // Reconexión agresiva si se cae
-      console.log('⚠️ Reconnecting visual feed...');
+      console.log('⚠️ Reconectando señal visual...');
       setTimeout(() => this.connectWebSocket(), 1000);
     };
   }
 
-  // --- ARRANQUE DEL SISTEMA (AUDIO) ---
+  // --- ARRANQUE DEL SISTEMA (Click inicial) ---
   startSystem() {
+    if (this.systemStarted) return;
     this.systemStarted = true;
     
-    // 🔥 AQUÍ ESTÁ LA MAGIA: BAD APPLE ARRANCA Y NO PARA 🔥
+    // 1. Bad Apple arranca
     const ba = this.audioBadApple.nativeElement;
-    ba.volume = 1.0; // Volumen al máximo
+    ba.volume = 1.0; 
     ba.play().catch(e => console.error("Error Bad Apple Audio:", e));
 
-    // "Calentamos" los otros audios (Play y Pause rápido para cargar el buffer)
+    // 2. Preparamos los otros audios (play/pause rápido)
     this.warmUp(this.audioMambo);
     this.warmUp(this.audioMiku);
+
+    // 3. Preparamos video Teto
+    if (this.videoTeto && this.videoTeto.nativeElement) {
+       this.videoTeto.nativeElement.muted = true;
+       this.videoTeto.nativeElement.play();
+    }
   }
 
-  warmUp(el: ElementRef) {
+  warmUp(el: ElementRef<HTMLAudioElement>) {
     el.nativeElement.muted = true;
-    el.nativeElement.play().then(() => el.nativeElement.pause());
-    el.nativeElement.muted = false;
+    el.nativeElement.play().then(() => el.nativeElement.pause()).catch(e => console.log(e));
+    el.nativeElement.muted = false; 
   }
 
-  // --- MEZCLADOR DE AUDIO INTELIGENTE ---
+  // --- OBSERVER DE SCROLL ---
   setupScrollObserver() {
-    const options = { threshold: 0.5 }; // Detectar al 50% de visibilidad
+    const options = { threshold: 0.5 }; 
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -84,57 +92,60 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       });
     }, options);
 
-    // Observar cada sección
+    // Esperar un poco a que el DOM renderice
     setTimeout(() => {
-      document.querySelectorAll('.stage').forEach(el => this.observer.observe(el));
+      const stages = document.querySelectorAll('.stage');
+      if (stages.length > 0) {
+        stages.forEach(el => this.observer.observe(el));
+      }
     }, 500);
   }
 
+  // --- MEZCLADOR DE AUDIO ---
   handleAudioMix(stageId: string) {
+    if (!this.audioBadApple) return;
+
     const ba = this.audioBadApple.nativeElement;
     const mambo = this.audioMambo.nativeElement;
     const miku = this.audioMiku.nativeElement;
     const teto = this.videoTeto.nativeElement;
 
-    // 1. SILENCIAR TEMPORALMENTE LOS MEMES (Para reiniciar o parar)
+    // Pausar memes temporalmente
     mambo.pause();
     miku.pause();
-    teto.muted = true; // Teto solo se silencia, sigue moviéndose
-    teto.pause();
+    teto.muted = true;
 
-    // 2. LÓGICA DE MEZCLA (DUCKING)
     switch(stageId) {
       case 'stage0': // PANTALLA PRINCIPAL
-        // Bad Apple vuelve a ser el rey
         this.fadeInVolume(ba, 1.0); 
+        teto.style.opacity = '0';
         break;
       
       case 'stage1': // MAMBO
-        // Bad Apple baja al 30% (NO PAUSA)
         ba.volume = 0.3; 
-        mambo.currentTime = 0;
+        mambo.currentTime = 0; 
         mambo.volume = 1.0;
         mambo.play();
+        teto.style.opacity = '0';
         break;
 
       case 'stage2': // MIKU
-        // Bad Apple baja al 30% (NO PAUSA)
-        ba.volume = 0.3;
-        miku.currentTime = 0;
+        ba.volume = 0.3; 
+        miku.currentTime = 0; 
         miku.volume = 1.0;
         miku.play();
+        teto.style.opacity = '0';
         break;
       
       case 'stage3': // TETO
-        // Bad Apple baja al 30% (NO PAUSA)
         ba.volume = 0.3;
-        teto.muted = false; // Teto toma el control
+        teto.style.opacity = '1'; 
+        teto.muted = false; 
         teto.play();
         break;
     }
   }
 
-  // Pequeña utilidad para subir el volumen suavemente
   fadeInVolume(audio: HTMLAudioElement, target: number) {
     let vol = audio.volume;
     const interval = setInterval(() => {
@@ -148,14 +159,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  // --- TETO ESCAPISTA ---
   moveTeto() {
-    const r = 250; // Rango de escape
+    const r = 250; 
     this.tX = (Math.random() * r * 2) - r;
     this.tY = (Math.random() * r * 2) - r;
   }
   
-  onScroll(event: any) {
-    // Necesario para el HTML, pero la lógica real va en el Observer
+  onScroll(event: Event) {
+    // Necesario para el HTML
   } 
 }
