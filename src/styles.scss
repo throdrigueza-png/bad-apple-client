@@ -1,0 +1,13 @@
+/* Reset básico y fondo negro absoluto */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #000;
+    color: #00ff00; /* Verde Matrix Hacker */
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

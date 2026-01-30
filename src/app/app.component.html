@@ -1,0 +1,55 @@
+<div *ngIf="!systemStarted" class="start-overlay" (click)="startSystem()">
+  <div class="start-btn">
+    <h1>>>> SYSTEM BOOT SEQUENCE <<<</h1>
+    <p>[ CLICK TO INITIATE BAD APPLE PROTOCOL ]</p>
+  </div>
+</div>
+
+<div class="bad-apple-bg">
+  <pre class="ascii-art">{{ asciiFrame }}</pre>
+</div>
+
+<main class="scroll-container" (scroll)="onScroll($event)">
+
+  <section class="stage" id="stage0"> 
+    <header class="gold-header">
+      <span class="neon-silver">THOMAS R.</span>
+      <span class="neon-gold">GOD MODE</span>
+    </header>
+    
+    <div class="scroll-fade-out">
+      <h2>SCROLL DOWN TO HACK ↓</h2>
+      <p style="color: #0f0; font-family: monospace;">SYSTEM_STATUS: ONLINE</p>
+    </div>
+  </section>
+
+  <section class="stage stage-mambo" id="stage1">
+    <div class="mambo-corner">
+      <div class="dialog-box">
+        ¡OJACHIMI MAMBO! 🐎
+      </div>
+      <img src="assets/mambo.gif" alt="Mambo">
+    </div>
+  </section>
+
+  <section class="stage stage-miku" id="stage2">
+    <div class="miku-container">
+      <div class="kanji-rain">未來<br>ERROR<br>01</div>
+      <img src="assets/miku.gif" class="miku-img">
+    </div>
+  </section>
+
+  <section class="stage stage-teto" id="stage3">
+    <div class="teto-window" 
+         [style.transform]="'translate(' + tX + 'px, ' + tY + 'px)'"
+         (mouseover)="moveTeto()">
+      <div class="win-header">🥖 TETO_DIVAGANDO.EXE [CATCH ME]</div>
+      <video #videoTeto src="assets/teto.mp4" loop muted playsinline width="100%"></video>
+    </div>
+  </section>
+
+</main>
+
+<audio #audioBadApple src="assets/bad_apple.mp3" loop></audio>
+<audio #audioMambo src="assets/mambo.mp3" loop></audio>
+<audio #audioMiku src="assets/levan.mp3" loop></audio>

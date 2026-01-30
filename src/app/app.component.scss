@@ -1,0 +1,19 @@
+.monitor-container {
+    background: #000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.matrix-screen {
+    color: #00ff00;
+    font-size: 6px;
+    line-height: 6px;
+    font-weight: bold;
+    white-space: pre;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}

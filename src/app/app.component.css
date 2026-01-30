@@ -1,0 +1,146 @@
+/* --- GLOBAL CONFIG --- */
+:host {
+  font-family: 'Courier New', Courier, monospace;
+  display: block;
+  overflow: hidden; /* IMPORTANTE: El host no scrollea, solo el container */
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  color: white;
+}
+
+/* EFECTO CRT / SCANLINES (TU TOQUE MAESTRO) */
+:host::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* --- CAPA DE FONDO: BAD APPLE (INTOCABLE) --- */
+.bad-apple-bg {
+  position: fixed; /* SE QUEDA CLAVADO AL FONDO */
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0;
+  display: flex; justify-content: center; align-items: center;
+  pointer-events: none;
+  opacity: 0.7; /* Transparencia para que no se coma el contenido */
+}
+
+.ascii-art {
+  font-size: 10px; 
+  line-height: 8px;
+  white-space: pre;
+  color: #FFFFFF;
+  font-weight: bold;
+  filter: none !important; /* NITIDEZ TOTAL */
+  transform: scale(1.2); /* Un poco más grande para llenar pantalla */
+}
+
+/* --- SCROLL CONTAINER (LO QUE SE MUEVE) --- */
+.scroll-container {
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  position: relative;
+  z-index: 10;
+  scroll-behavior: smooth;
+}
+
+/* --- STAGES --- */
+section.stage {
+  height: 100vh;
+  width: 100vw;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+/* --- TUS ESTILOS PERSONALIZADOS (HEADER, MIKU, ETC) --- */
+
+/* Header Dorado */
+.gold-header {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  border: 1px solid #ffd700;
+  background: rgba(0,0,0,0.8);
+  padding: 10px 40px;
+  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  z-index: 20;
+}
+.neon-silver { color: #fff; text-shadow: 0 0 5px cyan; font-weight: 900; margin-right: 15px;}
+.neon-gold { color: #ffd700; text-shadow: 0 0 10px orange; font-weight: 900; }
+
+/* Texto Intro */
+.scroll-fade-out {
+  text-align: center;
+  animation: vanish 3s ease-in-out forwards; 
+  animation-delay: 1s; /* Espera un segundo antes de irse */
+}
+@keyframes vanish {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.2); visibility: hidden; }
+}
+
+/* Mambo */
+.stage-mambo { display: flex; justify-content: flex-end; align-items: flex-end; }
+.mambo-corner { margin: 0 50px 50px 0; text-align: center; }
+.dialog-box {
+  background: white; color: black; padding: 5px; margin-bottom: 10px;
+  font-weight: bold; border: 2px solid gold; box-shadow: 5px 5px 0 black;
+}
+.mambo-corner img { width: 200px; border: 2px solid #ffd700; transition: 0.2s; }
+.mambo-corner img:hover { transform: scale(1.2) rotate(-10deg); }
+
+/* Miku Patrol */
+.stage-miku { display: block; }
+.miku-container {
+  position: absolute; width: 180px; z-index: 100;
+  animation: mikuPatrol 12s linear infinite;
+}
+.miku-img { width: 100%; filter: drop-shadow(0 0 10px #00ffff); animation: float 2s infinite; }
+.kanji-rain { position: absolute; top: -50px; color: cyan; font-weight: bold; animation: rain 1.5s infinite linear; }
+
+@keyframes mikuPatrol {
+  0%   { left: 5%; top: 10%; transform: scaleX(1); }   
+  25%  { left: 80%; top: 10%; transform: scaleX(1); }  
+  26%  { transform: scaleX(-1); } 
+  50%  { left: 5%; top: 10%; transform: scaleX(-1); }  
+  51%  { transform: scaleX(1); }
+  75%  { left: 80%; top: 70%; transform: scaleX(1); }  
+  85%  { left: 50%; top: 70%; transform: scaleX(1); }  
+  100% { left: 5%; top: 10%; transform: scaleX(1); }   
+}
+@keyframes float { 50% { transform: translateY(-15px); } }
+@keyframes rain { to { transform: translateY(200px); opacity: 0; } }
+
+/* Teto Divagando */
+.stage-teto { display: flex; justify-content: center; align-items: center; }
+.teto-window {
+  width: 400px; background: #c0c0c0; border: 2px outset #fff;
+  box-shadow: 20px 20px 0 rgba(0,0,0,0.8); transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.win-header { background: linear-gradient(90deg, #000080, #1084d0); padding: 5px; color: white; font-weight: bold; }
+
+/* Start Overlay */
+.start-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: black; z-index: 9999;
+  display: flex; justify-content: center; align-items: center; cursor: pointer;
+}
+.start-btn {
+  border: 2px solid #0f0; color: #0f0; padding: 40px; text-align: center;
+  box-shadow: 0 0 30px #0f0, inset 0 0 30px #0f0;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 50% { opacity: 0.5; box-shadow: 0 0 10px #0f0; } }
