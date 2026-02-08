@@ -1,26 +1,20 @@
 <div *ngIf="!systemStarted" class="start-overlay" (click)="startSystem()">
   <div class="start-btn">
     <h1>>>> SYSTEM BOOT SEQUENCE <<<</h1>
-    <p class="blink">[ CLICK TO INITIATE BAD APPLE PROTOCOL ]</p>
+    <p class="blink">[ CLICK TO INITIATE ]</p>
   </div>
 </div>
 
 <div class="bad-apple-bg">
-  <pre class="ascii-art">{{ asciiFrame }}</pre>
+  <pre #asciiPre class="ascii-art">ESPERANDO SEÑAL...</pre>
 </div>
 
 <main class="scroll-container" #scrollContainer>
-
   <section class="stage" id="stage0"> 
     <header class="gold-header">
       <span class="neon-silver">THOMAS R.</span>
       <span class="neon-gold">GOD MODE</span>
     </header>
-    
-    <div class="scroll-instruction">
-      <h2>SCROLL DOWN TO HACK ↓</h2>
-      <p>SYSTEM_STATUS: ONLINE</p>
-    </div>
   </section>
 
   <section class="stage stage-mambo" id="stage1">
@@ -41,11 +35,10 @@
     <div class="teto-window" 
          [style.transform]="'translate(' + tX + 'px, ' + tY + 'px)'"
          (mouseover)="moveTeto()">
-      <div class="win-header">🥖 TETO_DIVAGANDO.EXE [CATCH ME]</div>
+      <div class="win-header">🥖 TETO.EXE</div>
       <video #videoTeto src="assets/teto.mp4" loop muted playsinline class="teto-video"></video>
     </div>
   </section>
-
 </main>
 
 <audio #audioBadApple src="assets/bad_apple.mp3" loop></audio>
