@@ -1,225 +1,110 @@
-/* --- GLOBAL CONFIG --- */
 :host {
-  font-family: 'Courier New', Courier, monospace;
-  display: block;
-  overflow: hidden; /* IMPORTANTE: El host no scrollea, solo el container */
-  height: 100vh;
-  width: 100vw;
-  background-color: black;
-  color: white;
+  font-family: 'Courier New', monospace;
+  display: block; overflow: hidden; height: 100vh; width: 100vw;
+  background-color: black; color: white;
 }
 
-/* EFECTO CRT / SCANLINES (TU TOQUE MAESTRO) */
+/* SCANLINES */
 :host::after {
-  content: " ";
-  display: block;
-  position: absolute;
+  content: " "; display: block; position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 999; /* Encima de todo */
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none; /* PERMITE CLICS A TRAVÉS DEL EFECTO */
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 0, 255, 0.06));
+  z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
 }
 
-/* --- CAPA DE FONDO: BAD APPLE (INTOCABLE) --- */
+/* FONDO VIDEO */
 .bad-apple-bg {
-  position: fixed; /* SE QUEDA CLAVADO AL FONDO */
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 0;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  pointer-events: none;
-  opacity: 0.6; /* Un poco más transparente para leer mejor encima */
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+  display: flex; justify-content: center; align-items: center;
+  pointer-events: none; opacity: 0.8; /* Más brillo */
 }
 
 .ascii-art {
-  font-size: 10px; 
-  line-height: 8px;
-  white-space: pre;
-  color: #FFFFFF;
-  font-weight: bold;
-  transform: scale(1.3); /* Un poco más grande para llenar pantalla */
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  font-size: 10px; /* Tamaño base */
+  line-height: 8px; /* MENOS que el font-size para compactar verticalmente (Evita que se vea estirado) */
+  white-space: pre; color: #FFFFFF; font-weight: bold;
+  transform: scale(1.3); text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
 
-/* --- SCROLL CONTAINER (LO QUE SE MUEVE) --- */
+/* SCROLL */
 .scroll-container {
-  height: 100vh;
-  width: 100%;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  position: relative;
-  z-index: 10;
-  scroll-behavior: smooth;
-  /* OCULTAR BARRA DE SCROLL PERO MANTENER FUNCIONALIDAD */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
+  height: 100vh; width: 100%; overflow-y: scroll;
+  scroll-snap-type: y mandatory; position: relative; z-index: 10;
+  scrollbar-width: none;
 }
+.scroll-container::-webkit-scrollbar { display: none; }
 
-/* Ocultar scrollbar en Chrome/Safari */
-.scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* --- STAGES (ESCENARIOS) --- */
 section.stage {
-  height: 100vh;
-  width: 100vw;
-  scroll-snap-align: start;
-  position: relative;
-  overflow: hidden; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* Borde sutil para saber dónde acaba la sección */
-  border-bottom: 1px dashed rgba(0, 255, 0, 0.2);
+  height: 100vh; width: 100vw; scroll-snap-align: start;
+  position: relative; overflow: hidden; 
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 
-/* --- STAGE 0: HEADER DORADO --- */
+/* HEADER */
 .gold-header {
-  position: absolute; top: 50px; left: 50%; transform: translateX(-50%);
-  border: 2px solid #ffd700;
-  background: rgba(0,0,0,0.9);
-  padding: 15px 50px;
-  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-  z-index: 20;
+  position: absolute; top: 30px; 
+  border: 2px solid #ffd700; background: rgba(0,0,0,0.8);
+  padding: 10px 40px; box-shadow: 0 0 20px #ffd700;
   text-align: center;
 }
-.neon-silver { color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900; font-size: 1.5rem; margin-right: 15px;}
+.neon-silver { color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900; margin-right: 15px; font-size: 1.5rem; }
 .neon-gold { color: #ffd700; text-shadow: 0 0 15px orange; font-weight: 900; font-size: 1.5rem; }
 
-/* Texto Intro (Desaparece al hacer scroll) */
-.scroll-fade-out {
-  text-align: center;
-  margin-top: 200px;
-}
-.scroll-fade-out h2 {
-  font-size: 2rem;
-  color: #fff;
-  text-shadow: 0 0 10px #fff;
-  animation: flicker 2s infinite;
-}
-
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-  20%, 24%, 55% { opacity: 0.4; }
-}
-
-/* --- STAGE 1: MAMBO (HACHIMI) --- */
-/* AQUÍ ESTÁ EL CAMBIO QUE PEDISTE */
-.stage-mambo { 
-  display: flex; 
-  justify-content: flex-end; /* A la derecha */
-  align-items: flex-end;     /* Abajo */
-}
+/* --- MAMBO FIX: POSICIONAMIENTO ABSOLUTO --- */
+.stage-mambo { position: relative; } /* Necesario para que el absolute funcione dentro */
 
 .mambo-corner { 
-  margin-right: 40px;  /* Espacio desde la derecha */
-  margin-bottom: 40px; /* Espacio desde abajo */
+  position: absolute; /* LO FORZAMOS A LA ESQUINA */
+  bottom: 0;          /* Pegado abajo */
+  right: 0;           /* Pegado a la derecha */
+  margin-right: 20px; 
+  margin-bottom: 20px;
   text-align: center; 
   z-index: 50;
 }
 
 .dialog-box {
-  background: white; 
-  color: black; 
-  padding: 10px; 
-  margin-bottom: 15px;
-  font-weight: bold; 
+  background: white; color: black; padding: 10px; margin-bottom: 10px;
+  font-weight: bold; border: 3px solid gold; box-shadow: 5px 5px 0 black;
   font-size: 1.2rem;
-  border: 3px solid gold; 
-  box-shadow: 8px 8px 0 black;
-  /* Triangulito de diálogo */
-  position: relative;
-}
-.dialog-box::after {
-  content: ''; position: absolute; bottom: -10px; right: 50px;
-  border-width: 10px 10px 0; border-style: solid;
-  border-color: gold transparent; display: block; width: 0;
 }
 
 .mambo-corner img { 
-  width: 300px; /* ¡MÁS GRANDE! ANTES ERA 200px */
-  height: auto;
+  width: 320px; /* TAMAÑO GRANDE */
   border: 4px solid #ffd700; 
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  transition: transform 0.2s; 
 }
+.mambo-corner img:hover { transform: scale(1.1) rotate(-5deg); cursor: pointer; }
 
-.mambo-corner img:hover { 
-  transform: scale(1.1) rotate(-5deg); /* Efecto pop al pasar el mouse */
-  cursor: pointer;
-}
-
-/* --- STAGE 2: MIKU PATROL --- */
-.stage-miku { display: block; position: relative; }
-.miku-container {
-  position: absolute; width: 220px; z-index: 100;
-  animation: mikuPatrol 10s linear infinite;
-}
-.miku-img { width: 100%; filter: drop-shadow(0 0 15px #00ffff); animation: float 2s infinite ease-in-out; }
-.kanji-rain { 
-  position: absolute; top: -60px; left: 10px;
-  color: cyan; font-weight: bold; font-size: 1.5rem;
-  text-shadow: 0 0 5px blue;
-  animation: rain 1s infinite linear; 
-}
+/* OTROS STAGES (MIKU / TETO) */
+.miku-container { position: absolute; width: 220px; animation: mikuPatrol 10s linear infinite; }
+.miku-img { width: 100%; filter: drop-shadow(0 0 10px cyan); animation: float 2s infinite; }
+.kanji-rain { position: absolute; top: -50px; color: cyan; font-weight: bold; animation: rain 1s infinite; }
 
 @keyframes mikuPatrol {
-  0%   { left: -10%; top: 10%; transform: scaleX(1); }    
-  40%  { left: 80%; top: 10%; transform: scaleX(1); }   
-  45%  { transform: scaleX(1) rotate(10deg); } 
-  50%  { transform: scaleX(-1); left: 80%; top: 40%; }  
-  90%  { left: -10%; top: 60%; transform: scaleX(-1); }   
-  100% { left: -10%; top: 10%; transform: scaleX(1); }    
+  0%   { left: -20%; top: 10%; transform: scaleX(1); }    
+  45%  { left: 80%; top: 10%; transform: scaleX(1); }   
+  50%  { transform: scaleX(-1); left: 80%; top: 10%; }  
+  95%  { left: -20%; top: 60%; transform: scaleX(-1); }   
+  100% { left: -20%; top: 10%; transform: scaleX(1); }    
 }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-@keyframes rain { 0% { opacity: 1; transform: translateY(0); } 100% { transform: translateY(50px); opacity: 0; } }
-
-/* --- STAGE 3: TETO DIVAGANDO --- */
-.stage-teto { display: flex; justify-content: center; align-items: center; }
+@keyframes float { 50% { transform: translateY(-15px); } }
+@keyframes rain { to { transform: translateY(50px); opacity: 0; } }
 
 .teto-window {
-  width: 450px; 
-  background: #c0c0c0; 
-  border: 3px outset #fff;
-  box-shadow: 30px 30px 0 rgba(0,0,0,0.8); 
-  transition: transform 0.1s linear; /* Movimiento robótico */
+  width: 450px; background: #c0c0c0; border: 3px outset #fff;
+  box-shadow: 20px 20px 0 black; transition: 0.1s linear;
 }
+.win-header { background: navy; color: white; padding: 5px; font-weight: bold; }
 
-.win-header { 
-  background: linear-gradient(90deg, #000080, #1084d0); 
-  padding: 8px; color: white; font-weight: bold; letter-spacing: 1px;
-  display: flex; justify-content: space-between;
-}
-.win-header::after { content: "X"; background: #ccc; color: black; padding: 0 5px; border: 1px outset white; cursor: pointer; }
-
-/* --- START OVERLAY (BOTÓN INICIO) --- */
+/* START SCREEN */
 .start-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: black; z-index: 9999;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999;
   display: flex; justify-content: center; align-items: center; cursor: pointer;
 }
-
 .start-btn {
-  border: 4px solid #0f0; 
-  color: #0f0; 
-  padding: 50px; 
-  text-align: center;
-  background: rgba(0, 20, 0, 0.9);
-  box-shadow: 0 0 50px #0f0, inset 0 0 20px #0f0;
-  animation: pulse 1.5s infinite;
+  border: 3px solid lime; color: lime; padding: 40px; text-align: center;
+  box-shadow: 0 0 40px lime; animation: pulse 1.5s infinite;
 }
-
-.start-btn h1 { margin: 0 0 20px 0; font-size: 2rem; }
-.start-btn p { font-size: 1.2rem; }
-
-@keyframes pulse { 
-  0% { transform: scale(1); box-shadow: 0 0 30px #0f0; } 
-  50% { transform: scale(1.05); box-shadow: 0 0 60px #0f0; } 
-  100% { transform: scale(1); box-shadow: 0 0 30px #0f0; } 
-}
+@keyframes pulse { 50% { opacity: 0.6; } }
