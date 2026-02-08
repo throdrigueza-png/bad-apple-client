@@ -1,7 +1,7 @@
 <div *ngIf="!systemStarted" class="start-overlay" (click)="startSystem()">
   <div class="start-btn">
     <h1>>>> SYSTEM BOOT SEQUENCE <<<</h1>
-    <p>[ CLICK TO INITIATE BAD APPLE PROTOCOL ]</p>
+    <p class="blink">[ CLICK TO INITIATE BAD APPLE PROTOCOL ]</p>
   </div>
 </div>
 
@@ -9,7 +9,7 @@
   <pre class="ascii-art">{{ asciiFrame }}</pre>
 </div>
 
-<main class="scroll-container" (scroll)="onScroll($event)">
+<main class="scroll-container" #scrollContainer>
 
   <section class="stage" id="stage0"> 
     <header class="gold-header">
@@ -17,17 +17,15 @@
       <span class="neon-gold">GOD MODE</span>
     </header>
     
-    <div class="scroll-fade-out">
+    <div class="scroll-instruction">
       <h2>SCROLL DOWN TO HACK ↓</h2>
-      <p style="color: #0f0; font-family: monospace;">SYSTEM_STATUS: ONLINE</p>
+      <p>SYSTEM_STATUS: ONLINE</p>
     </div>
   </section>
 
   <section class="stage stage-mambo" id="stage1">
     <div class="mambo-corner">
-      <div class="dialog-box">
-        ¡OJACHIMI MAMBO! 🐎
-      </div>
+      <div class="dialog-box">¡OJACHIMI MAMBO! 🐎</div>
       <img src="assets/mambo.gif" alt="Mambo">
     </div>
   </section>
@@ -44,7 +42,7 @@
          [style.transform]="'translate(' + tX + 'px, ' + tY + 'px)'"
          (mouseover)="moveTeto()">
       <div class="win-header">🥖 TETO_DIVAGANDO.EXE [CATCH ME]</div>
-      <video #videoTeto src="assets/teto.mp4" loop muted playsinline width="100%"></video>
+      <video #videoTeto src="assets/teto.mp4" loop muted playsinline class="teto-video"></video>
     </div>
   </section>
 
