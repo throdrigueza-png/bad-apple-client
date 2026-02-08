@@ -15,10 +15,11 @@
   display: block;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 999;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999; /* Encima de todo */
   background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
+  pointer-events: none; /* PERMITE CLICS A TRAVÉS DEL EFECTO */
 }
 
 /* --- CAPA DE FONDO: BAD APPLE (INTOCABLE) --- */
@@ -26,9 +27,11 @@
   position: fixed; /* SE QUEDA CLAVADO AL FONDO */
   top: 0; left: 0; width: 100%; height: 100%;
   z-index: 0;
-  display: flex; justify-content: center; align-items: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
   pointer-events: none;
-  opacity: 0.7; /* Transparencia para que no se coma el contenido */
+  opacity: 0.6; /* Un poco más transparente para leer mejor encima */
 }
 
 .ascii-art {
@@ -37,8 +40,8 @@
   white-space: pre;
   color: #FFFFFF;
   font-weight: bold;
-  filter: none !important; /* NITIDEZ TOTAL */
-  transform: scale(1.2); /* Un poco más grande para llenar pantalla */
+  transform: scale(1.3); /* Un poco más grande para llenar pantalla */
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 /* --- SCROLL CONTAINER (LO QUE SE MUEVE) --- */
@@ -50,9 +53,17 @@
   position: relative;
   z-index: 10;
   scroll-behavior: smooth;
+  /* OCULTAR BARRA DE SCROLL PERO MANTENER FUNCIONALIDAD */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
 }
 
-/* --- STAGES --- */
+/* Ocultar scrollbar en Chrome/Safari */
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- STAGES (ESCENARIOS) --- */
 section.stage {
   height: 100vh;
   width: 100vw;
@@ -63,84 +74,152 @@ section.stage {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+  /* Borde sutil para saber dónde acaba la sección */
+  border-bottom: 1px dashed rgba(0, 255, 0, 0.2);
 }
 
-/* --- TUS ESTILOS PERSONALIZADOS (HEADER, MIKU, ETC) --- */
-
-/* Header Dorado */
+/* --- STAGE 0: HEADER DORADO --- */
 .gold-header {
-  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-  border: 1px solid #ffd700;
-  background: rgba(0,0,0,0.8);
-  padding: 10px 40px;
+  position: absolute; top: 50px; left: 50%; transform: translateX(-50%);
+  border: 2px solid #ffd700;
+  background: rgba(0,0,0,0.9);
+  padding: 15px 50px;
   clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
   z-index: 20;
+  text-align: center;
 }
-.neon-silver { color: #fff; text-shadow: 0 0 5px cyan; font-weight: 900; margin-right: 15px;}
-.neon-gold { color: #ffd700; text-shadow: 0 0 10px orange; font-weight: 900; }
+.neon-silver { color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900; font-size: 1.5rem; margin-right: 15px;}
+.neon-gold { color: #ffd700; text-shadow: 0 0 15px orange; font-weight: 900; font-size: 1.5rem; }
 
-/* Texto Intro */
+/* Texto Intro (Desaparece al hacer scroll) */
 .scroll-fade-out {
   text-align: center;
-  animation: vanish 3s ease-in-out forwards; 
-  animation-delay: 1s; /* Espera un segundo antes de irse */
+  margin-top: 200px;
 }
-@keyframes vanish {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.2); visibility: hidden; }
+.scroll-fade-out h2 {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 10px #fff;
+  animation: flicker 2s infinite;
 }
 
-/* Mambo */
-.stage-mambo { display: flex; justify-content: flex-end; align-items: flex-end; }
-.mambo-corner { margin: 0 50px 50px 0; text-align: center; }
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+/* --- STAGE 1: MAMBO (HACHIMI) --- */
+/* AQUÍ ESTÁ EL CAMBIO QUE PEDISTE */
+.stage-mambo { 
+  display: flex; 
+  justify-content: flex-end; /* A la derecha */
+  align-items: flex-end;     /* Abajo */
+}
+
+.mambo-corner { 
+  margin-right: 40px;  /* Espacio desde la derecha */
+  margin-bottom: 40px; /* Espacio desde abajo */
+  text-align: center; 
+  z-index: 50;
+}
+
 .dialog-box {
-  background: white; color: black; padding: 5px; margin-bottom: 10px;
-  font-weight: bold; border: 2px solid gold; box-shadow: 5px 5px 0 black;
+  background: white; 
+  color: black; 
+  padding: 10px; 
+  margin-bottom: 15px;
+  font-weight: bold; 
+  font-size: 1.2rem;
+  border: 3px solid gold; 
+  box-shadow: 8px 8px 0 black;
+  /* Triangulito de diálogo */
+  position: relative;
 }
-.mambo-corner img { width: 200px; border: 2px solid #ffd700; transition: 0.2s; }
-.mambo-corner img:hover { transform: scale(1.2) rotate(-10deg); }
+.dialog-box::after {
+  content: ''; position: absolute; bottom: -10px; right: 50px;
+  border-width: 10px 10px 0; border-style: solid;
+  border-color: gold transparent; display: block; width: 0;
+}
 
-/* Miku Patrol */
-.stage-miku { display: block; }
-.miku-container {
-  position: absolute; width: 180px; z-index: 100;
-  animation: mikuPatrol 12s linear infinite;
+.mambo-corner img { 
+  width: 300px; /* ¡MÁS GRANDE! ANTES ERA 200px */
+  height: auto;
+  border: 4px solid #ffd700; 
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
-.miku-img { width: 100%; filter: drop-shadow(0 0 10px #00ffff); animation: float 2s infinite; }
-.kanji-rain { position: absolute; top: -50px; color: cyan; font-weight: bold; animation: rain 1.5s infinite linear; }
+
+.mambo-corner img:hover { 
+  transform: scale(1.1) rotate(-5deg); /* Efecto pop al pasar el mouse */
+  cursor: pointer;
+}
+
+/* --- STAGE 2: MIKU PATROL --- */
+.stage-miku { display: block; position: relative; }
+.miku-container {
+  position: absolute; width: 220px; z-index: 100;
+  animation: mikuPatrol 10s linear infinite;
+}
+.miku-img { width: 100%; filter: drop-shadow(0 0 15px #00ffff); animation: float 2s infinite ease-in-out; }
+.kanji-rain { 
+  position: absolute; top: -60px; left: 10px;
+  color: cyan; font-weight: bold; font-size: 1.5rem;
+  text-shadow: 0 0 5px blue;
+  animation: rain 1s infinite linear; 
+}
 
 @keyframes mikuPatrol {
-  0%   { left: 5%; top: 10%; transform: scaleX(1); }   
-  25%  { left: 80%; top: 10%; transform: scaleX(1); }  
-  26%  { transform: scaleX(-1); } 
-  50%  { left: 5%; top: 10%; transform: scaleX(-1); }  
-  51%  { transform: scaleX(1); }
-  75%  { left: 80%; top: 70%; transform: scaleX(1); }  
-  85%  { left: 50%; top: 70%; transform: scaleX(1); }  
-  100% { left: 5%; top: 10%; transform: scaleX(1); }   
+  0%   { left: -10%; top: 10%; transform: scaleX(1); }    
+  40%  { left: 80%; top: 10%; transform: scaleX(1); }   
+  45%  { transform: scaleX(1) rotate(10deg); } 
+  50%  { transform: scaleX(-1); left: 80%; top: 40%; }  
+  90%  { left: -10%; top: 60%; transform: scaleX(-1); }   
+  100% { left: -10%; top: 10%; transform: scaleX(1); }    
 }
-@keyframes float { 50% { transform: translateY(-15px); } }
-@keyframes rain { to { transform: translateY(200px); opacity: 0; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes rain { 0% { opacity: 1; transform: translateY(0); } 100% { transform: translateY(50px); opacity: 0; } }
 
-/* Teto Divagando */
+/* --- STAGE 3: TETO DIVAGANDO --- */
 .stage-teto { display: flex; justify-content: center; align-items: center; }
-.teto-window {
-  width: 400px; background: #c0c0c0; border: 2px outset #fff;
-  box-shadow: 20px 20px 0 rgba(0,0,0,0.8); transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.win-header { background: linear-gradient(90deg, #000080, #1084d0); padding: 5px; color: white; font-weight: bold; }
 
-/* Start Overlay */
+.teto-window {
+  width: 450px; 
+  background: #c0c0c0; 
+  border: 3px outset #fff;
+  box-shadow: 30px 30px 0 rgba(0,0,0,0.8); 
+  transition: transform 0.1s linear; /* Movimiento robótico */
+}
+
+.win-header { 
+  background: linear-gradient(90deg, #000080, #1084d0); 
+  padding: 8px; color: white; font-weight: bold; letter-spacing: 1px;
+  display: flex; justify-content: space-between;
+}
+.win-header::after { content: "X"; background: #ccc; color: black; padding: 0 5px; border: 1px outset white; cursor: pointer; }
+
+/* --- START OVERLAY (BOTÓN INICIO) --- */
 .start-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: black; z-index: 9999;
   display: flex; justify-content: center; align-items: center; cursor: pointer;
 }
+
 .start-btn {
-  border: 2px solid #0f0; color: #0f0; padding: 40px; text-align: center;
-  box-shadow: 0 0 30px #0f0, inset 0 0 30px #0f0;
+  border: 4px solid #0f0; 
+  color: #0f0; 
+  padding: 50px; 
+  text-align: center;
+  background: rgba(0, 20, 0, 0.9);
+  box-shadow: 0 0 50px #0f0, inset 0 0 20px #0f0;
   animation: pulse 1.5s infinite;
 }
-@keyframes pulse { 50% { opacity: 0.5; box-shadow: 0 0 10px #0f0; } }
+
+.start-btn h1 { margin: 0 0 20px 0; font-size: 2rem; }
+.start-btn p { font-size: 1.2rem; }
+
+@keyframes pulse { 
+  0% { transform: scale(1); box-shadow: 0 0 30px #0f0; } 
+  50% { transform: scale(1.05); box-shadow: 0 0 60px #0f0; } 
+  100% { transform: scale(1); box-shadow: 0 0 30px #0f0; } 
+}
