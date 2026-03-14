@@ -47,6 +47,15 @@ section.stage {
   border: 2px solid #ffd700; background: rgba(0,0,0,0.8);
   padding: 10px clamp(15px, 5vw, 40px); box-shadow: 0 0 20px #ffd700;
   text-align: center; max-width: 92vw; box-sizing: border-box;
+  display: flex; align-items: center; gap: clamp(8px, 2.5vw, 18px);
+  flex-wrap: wrap; justify-content: center;
+}
+.header-logo {
+  height: clamp(32px, 6vw, 52px);
+  width: auto;
+  filter: drop-shadow(0 0 8px cyan) drop-shadow(0 0 4px cyan);
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 .neon-silver {
   color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900;
