@@ -17,12 +17,12 @@
 .bad-apple-bg {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
   display: flex; justify-content: center; align-items: center;
-  pointer-events: none; opacity: 0.8; /* Más brillo */
+  pointer-events: none; opacity: 0.8;
 }
 
 .ascii-art {
-  font-size: 10px; /* Tamaño base */
-  line-height: 8px; /* MENOS que el font-size para compactar verticalmente (Evita que se vea estirado) */
+  font-size: clamp(4px, 1.5vw, 10px);
+  line-height: clamp(3px, 1.2vw, 8px);
   white-space: pre; color: #FFFFFF; font-weight: bold;
   transform: scale(1.3); text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
@@ -45,42 +45,113 @@ section.stage {
 .gold-header {
   position: absolute; top: 30px; 
   border: 2px solid #ffd700; background: rgba(0,0,0,0.8);
-  padding: 10px 40px; box-shadow: 0 0 20px #ffd700;
-  text-align: center;
+  padding: 10px clamp(15px, 5vw, 40px); box-shadow: 0 0 20px #ffd700;
+  text-align: center; max-width: 92vw; box-sizing: border-box;
 }
-.neon-silver { color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900; margin-right: 15px; font-size: 1.5rem; }
-.neon-gold { color: #ffd700; text-shadow: 0 0 15px orange; font-weight: 900; font-size: 1.5rem; }
+.neon-silver {
+  color: #fff; text-shadow: 0 0 10px cyan; font-weight: 900;
+  margin-right: clamp(5px, 2vw, 15px); font-size: clamp(0.9rem, 4vw, 1.5rem);
+  display: inline-block;
+}
+.neon-gold {
+  color: #ffd700; text-shadow: 0 0 15px orange; font-weight: 900;
+  font-size: clamp(0.9rem, 4vw, 1.5rem); display: inline-block;
+}
+
+/* SECTION LABELS */
+.section-label {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  font-size: clamp(0.65rem, 2vw, 0.85rem); letter-spacing: 0.15em;
+  text-transform: uppercase; opacity: 0.6; white-space: nowrap;
+}
+
+/* SCROLL HINT */
+.scroll-hint {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  opacity: 0.55; animation: bounce 2s infinite;
+}
+.scroll-hint span { font-size: clamp(0.6rem, 2vw, 0.75rem); letter-spacing: 0.1em; color: #ffd700; }
+.scroll-hint-arrow {
+  width: 20px; height: 20px; border-right: 2px solid #ffd700;
+  border-bottom: 2px solid #ffd700; transform: rotate(45deg);
+}
+@keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
 
 /* --- MAMBO FIX: POSICIONAMIENTO ABSOLUTO --- */
-.stage-mambo { position: relative; } /* Necesario para que el absolute funcione dentro */
+.stage-mambo { position: relative; }
 
 .mambo-corner { 
-  position: absolute; /* LO FORZAMOS A LA ESQUINA */
-  bottom: 0;          /* Pegado abajo */
-  right: 0;           /* Pegado a la derecha */
-  margin-right: 20px; 
-  margin-bottom: 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: clamp(10px, 3vw, 20px);
+  margin-bottom: clamp(10px, 3vw, 20px);
   text-align: center; 
   z-index: 50;
 }
 
 .dialog-box {
-  background: white; color: black; padding: 10px; margin-bottom: 10px;
+  background: white; color: black; padding: clamp(6px, 2vw, 10px); margin-bottom: 10px;
   font-weight: bold; border: 3px solid gold; box-shadow: 5px 5px 0 black;
-  font-size: 1.2rem;
+  font-size: clamp(0.85rem, 3.5vw, 1.2rem);
 }
 
 .mambo-corner img { 
-  width: 320px; /* TAMAÑO GRANDE */
+  width: clamp(130px, 38vw, 320px);
   border: 4px solid #ffd700; 
   transition: transform 0.2s; 
+  display: block;
 }
 .mambo-corner img:hover { transform: scale(1.1) rotate(-5deg); cursor: pointer; }
 
+/* MAMBO TITLE */
+.mambo-title {
+  position: absolute; top: 50%; left: clamp(15px, 5vw, 50px);
+  transform: translateY(-50%);
+  z-index: 50;
+}
+.mambo-title h2 {
+  color: #ffd700; text-shadow: 0 0 20px orange, 0 0 40px orange;
+  font-size: clamp(2rem, 10vw, 5rem); font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin: 0; line-height: 1;
+}
+.mambo-title p {
+  color: #fff; font-size: clamp(0.7rem, 2.5vw, 1rem);
+  text-shadow: 0 0 8px cyan; margin: 8px 0 0; letter-spacing: 0.1em;
+}
+
 /* OTROS STAGES (MIKU / TETO) */
-.miku-container { position: absolute; width: 220px; animation: mikuPatrol 10s linear infinite; }
+.miku-container { position: absolute; width: clamp(100px, 22vw, 220px); animation: mikuPatrol 10s linear infinite; }
 .miku-img { width: 100%; filter: drop-shadow(0 0 10px cyan); animation: float 2s infinite; }
-.kanji-rain { position: absolute; top: -50px; color: cyan; font-weight: bold; animation: rain 1s infinite; }
+.kanji-rain {
+  position: absolute; top: -50px; color: cyan; font-weight: bold;
+  animation: rain 1s infinite; font-size: clamp(0.75rem, 2vw, 1rem);
+}
+
+/* MIKU TITLE */
+.miku-title {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5; text-align: center; pointer-events: none;
+}
+.miku-title h2 {
+  color: cyan; text-shadow: 0 0 20px cyan, 0 0 50px cyan;
+  font-size: clamp(2rem, 10vw, 5rem); font-weight: 900;
+  text-transform: uppercase; margin: 0; letter-spacing: 0.05em;
+  animation: glitch 3s infinite;
+}
+.miku-title p {
+  color: #fff; font-size: clamp(0.65rem, 2.5vw, 1rem);
+  text-shadow: 0 0 8px cyan; margin: 8px 0 0; letter-spacing: 0.1em;
+}
+@keyframes glitch {
+  0%, 90%, 100% { text-shadow: 0 0 20px cyan, 0 0 50px cyan; }
+  92% { text-shadow: 4px 0 20px magenta, -4px 0 20px cyan; }
+  94% { text-shadow: -4px 0 20px magenta, 4px 0 20px cyan; }
+  96% { text-shadow: 0 0 20px cyan, 0 0 50px cyan; }
+}
 
 @keyframes mikuPatrol {
   0%   { left: -20%; top: 10%; transform: scaleX(1); }    
@@ -92,11 +163,26 @@ section.stage {
 @keyframes float { 50% { transform: translateY(-15px); } }
 @keyframes rain { to { transform: translateY(50px); opacity: 0; } }
 
+/* TETO */
 .teto-window {
-  width: 450px; background: #c0c0c0; border: 3px outset #fff;
-  box-shadow: 20px 20px 0 black; transition: 0.1s linear;
+  width: min(450px, 85vw);
+  background: #c0c0c0; border: 3px outset #fff;
+  box-shadow: clamp(8px, 3vw, 20px) clamp(8px, 3vw, 20px) 0 black;
+  transition: 0.1s linear;
 }
-.win-header { background: navy; color: white; padding: 5px; font-weight: bold; }
+.win-header {
+  background: navy; color: white; padding: 5px clamp(6px, 2vw, 10px);
+  font-weight: bold; font-size: clamp(0.75rem, 3vw, 1rem);
+}
+.teto-video { width: 100%; height: auto; display: block; }
+
+/* TETO LABEL */
+.teto-label {
+  position: absolute; bottom: clamp(15px, 4vw, 30px); left: 50%;
+  transform: translateX(-50%);
+  color: #c0c0c0; font-size: clamp(0.6rem, 2vw, 0.8rem);
+  text-align: center; opacity: 0.7; white-space: nowrap;
+}
 
 /* START SCREEN */
 .start-overlay {
@@ -104,7 +190,38 @@ section.stage {
   display: flex; justify-content: center; align-items: center; cursor: pointer;
 }
 .start-btn {
-  border: 3px solid lime; color: lime; padding: 40px; text-align: center;
-  box-shadow: 0 0 40px lime; animation: pulse 1.5s infinite;
+  border: 3px solid lime; color: lime;
+  padding: clamp(20px, 6vw, 40px) clamp(20px, 8vw, 40px);
+  text-align: center;
+  box-shadow: 0 0 40px lime, 0 0 80px rgba(0, 255, 0, 0.2);
+  animation: pulse 1.5s infinite;
+  max-width: 90vw; box-sizing: border-box;
 }
+.start-btn h1 { font-size: clamp(0.9rem, 5vw, 1.5rem); margin: 0 0 12px; color: lime; }
+.start-btn p  { font-size: clamp(0.75rem, 3.5vw, 1rem); }
+
+/* BLINK */
+.blink { animation: blink-anim 1s step-end infinite; }
+@keyframes blink-anim { 50% { opacity: 0; } }
+
 @keyframes pulse { 50% { opacity: 0.6; } }
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .blink, .scroll-hint { animation: none; }
+  .miku-title h2 { animation: none; }
+  .miku-container { animation-play-state: paused; }
+}
+
+/* ---- MOBILE BREAKPOINT ---- */
+@media (max-width: 480px) {
+  .ascii-art {
+    font-size: clamp(3px, 2vw, 6px);
+    line-height: clamp(2px, 1.6vw, 5px);
+  }
+  .mambo-corner img { width: clamp(110px, 45vw, 200px); }
+  .teto-window { width: 92vw; }
+  .miku-container { width: clamp(80px, 28vw, 130px); }
+  .mambo-title h2 { font-size: clamp(1.8rem, 12vw, 3.5rem); }
+  .miku-title h2  { font-size: clamp(1.8rem, 12vw, 3.5rem); }
+}
