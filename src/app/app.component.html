@@ -15,9 +15,18 @@
       <span class="neon-silver">THOMAS R.</span>
       <span class="neon-gold">GOD MODE</span>
     </header>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <div class="scroll-hint-arrow"></div>
+    </div>
   </section>
 
   <section class="stage stage-mambo" id="stage1">
+    <span class="section-label" style="color:#ffd700;">— 01 / MAMBO —</span>
+    <div class="mambo-title">
+      <h2>MAMBO</h2>
+      <p>¡OJACHIMI!</p>
+    </div>
     <div class="mambo-corner">
       <div class="dialog-box">¡OJACHIMI MAMBO! 🐎</div>
       <img src="assets/mambo.gif" alt="Mambo">
@@ -25,6 +34,11 @@
   </section>
 
   <section class="stage stage-miku" id="stage2">
+    <span class="section-label" style="color:cyan;">— 02 / MIKU —</span>
+    <div class="miku-title">
+      <h2>MIKU</h2>
+      <p>初音ミク · LEVAN POLKKA</p>
+    </div>
     <div class="miku-container">
       <div class="kanji-rain">未來<br>ERROR<br>01</div>
       <img src="assets/miku.gif" class="miku-img">
@@ -32,12 +46,17 @@
   </section>
 
   <section class="stage stage-teto" id="stage3">
-    <div class="teto-window" 
-         [style.transform]="'translate(' + tX + 'px, ' + tY + 'px)'"
-         (mouseover)="moveTeto()">
-      <div class="win-header">🥖 TETO.EXE</div>
+    <span class="section-label" style="color:#c0c0c0;">— 03 / TETO —</span>
+      <div class="teto-window" 
+           [style.transform]="'translate(' + tX + 'px, ' + tY + 'px)'"
+           (mouseover)="moveTeto()"
+           (click)="moveTeto()"
+           aria-label="Teto.exe ventana — hover o toca para mover"
+           title="Hover o toca para mover">
+      <div class="win-header">🥖 TETO.EXE — [hover/tap to move]</div>
       <video #videoTeto src="assets/teto.mp4" loop muted playsinline class="teto-video"></video>
     </div>
+    <div class="teto-label">KASANE TETO · 重音テト</div>
   </section>
 </main>
 

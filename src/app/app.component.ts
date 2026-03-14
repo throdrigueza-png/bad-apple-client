@@ -133,8 +133,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   moveTeto() {
-    const r = 200; 
-    this.tX = (Math.random() * r * 2) - r;
-    this.tY = (Math.random() * r * 2) - r;
+    const maxMove = Math.min(window.innerWidth, window.innerHeight) * 0.12;
+    this.tX = (Math.random() * maxMove * 2) - maxMove;
+    this.tY = (Math.random() * maxMove * 2) - maxMove;
   }
 }
